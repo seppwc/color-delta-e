@@ -5,8 +5,14 @@
   "packageManager": "pnpm@7.9.0",
   "description": "",
   "author": "Sepp Wikramaratna-Clarke <https://github.com/Phl3bas>",
+  "homepage": "https://github.com/Phl3bas/color-delta-e#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Phl3bas/color-delta-e.git"
+  },
+  "bugs": "https://github.com/Phl3bas/color-delta-e/issues",
   "license": "MIT",
-  "keywords": [],
+  "keywords": ["delta-e", "deltae", "diff", "color", "colour", "color-diff", "color-diffing"],
   "sideEffects": false,
   "exports": {
     ".": {
