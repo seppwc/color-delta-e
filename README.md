@@ -1,6 +1,6 @@
 # color-delta-e
 
-A tiny library for comparing the perceived difference between two colors
+A Tiny library for measuring the perceived visual difference between two colors
 
 
 ## Defining Delta E
