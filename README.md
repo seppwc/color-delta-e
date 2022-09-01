@@ -52,14 +52,14 @@ if(isPerceivable([55,117,192],[14,81,162])){
 ```
 
 ### `contrastText`
-takes a color and will return with `#fff` or `#000` which ever contrasts best with provided color
+takes a color and will return with `[0,0,0]` or `[255,255,255]` which ever contrasts best with provided color
 
 
 ```typescript
 
 const res = contrastText([0,0,0])
 
-res // '#fff'
+res // '[255,255,255]'
 
 ```
 
