@@ -25,6 +25,9 @@ credit to: http://zschuessler.github.io/DeltaE/learn/
 
 ## API
 
+current beta limitations:
+   1. only supports RGB value inputs
+
 ### `deltaE`
 
 takes two colors and measures the percievable difference between them and returns the deltaE value `0-100`
