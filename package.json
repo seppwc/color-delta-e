@@ -5,13 +5,13 @@
   "packageManager": "pnpm@7.9.0",
   "description": "",
   "author": "Sepp Wikramaratna-Clarke <https://github.com/Phl3bas>",
+  "license": "MIT",
   "homepage": "https://github.com/Phl3bas/color-delta-e#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Phl3bas/color-delta-e.git"
   },
   "bugs": "https://github.com/Phl3bas/color-delta-e/issues",
-  "license": "MIT",
   "keywords": [
     "delta-e",
     "deltae",
