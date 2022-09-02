@@ -43,7 +43,9 @@ current beta limitations:
 
 takes two colors and measures the percievable difference between them and returns the deltaE value `0-100`
 
-```typescript rgb(55,117,192)
+```typescript
+  import { deltaE } from 'color-delta-e'
+
   const res = deltaE(
             [55,117,192],
             [14,81,162], 
@@ -59,6 +61,7 @@ takes two numbers an returns a boolean indicating if the value is above the thre
 
 
 ```typescript
+import { isPerceivable } from 'color-delta-e'
 
 if(isPerceivable([55,117,192],[14,81,162])){
     // do stuff
@@ -70,6 +73,7 @@ takes a color and will return with `[0,0,0]` or `[255,255,255]` which ever contr
 
 
 ```typescript
+import { contrastText } from 'color-delta-e'
 
 const res = contrastText([0,0,0])
 
@@ -82,17 +86,18 @@ res // '[255,255,255]'
 takes in base options including base color to compare to, and threshold. rest arguments are a list of fallback colors to go through. selector will return the first color that has a perceptible contrast that meets the threshold provided. If no contrasting values found, will return the last fallback provided.
 
 ```typescript
+import { selector } from 'color-delta-e'
 
-    const res = selector({
-                    base: [0, 0, 0]
-                },
-                [0, 1, 0],
-                [0, 2, 0],
-                [200, 30, 10],
-                [255, 255, 255]
-    );
+const res = selector({
+                base: [0, 0, 0]
+            },
+            [0, 1, 0],
+            [0, 2, 0],
+            [200, 30, 10],
+            [255, 255, 255]
+);
 
-    res // [200, 30, 10]
+res // [200, 30, 10]
 ```
 
 
@@ -106,9 +111,13 @@ only works in browser environments.
 doesn't support crossOrigin images.
 
 ```typescript
-    const res = sampleImage(myImgEl)
+import { sampleImage } from 'color-delta-e'
 
-    res // [100, 23, 221]
+const myImgEl = document.querySelector('img')
+
+const res = sampleImage(myImgEl)
+
+res // [100, 23, 221]
 ```
 
 
