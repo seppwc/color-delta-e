@@ -1,3 +1,6 @@
+![npm](https://img.shields.io/npm/v/color-delta-e?color=crimson&label=latest&logo=npm&style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/min/color-delta-e?logo=npm&label=min&style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/color-delta-e?logo=npm&label=min-zipped&style=flat-square) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Phl3bas/color-delta-e/CI?style=flat-square)
+
+
 # color-delta-e
 
 A Tiny library for measuring the perceived visual difference between two colors
