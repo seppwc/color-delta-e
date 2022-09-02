@@ -24,7 +24,15 @@ On a typical scale, the Delta E value will range from 0 to 100.
 
 credit to: http://zschuessler.github.io/DeltaE/learn/
 
+## Installation
 
+```bash
+npm install color-delta-e
+
+yarn add color-delta-e
+
+pnpm add color-delta-e
+```
 
 ## API
 
