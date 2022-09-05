@@ -3,4 +3,4 @@
  **/
 export type ColorTuple = [number, number, number]
 
-export type deltaValueType = 'rgb' | 'rgba' | 'hex' | 'hsla' | 'lab'
+export type deltaValueType = 'rgb' | 'hex' | 'hsl' | 'lab'
