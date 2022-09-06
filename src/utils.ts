@@ -1,9 +1,9 @@
-import type { ColorTuple, deltaValueType } from './types'
+import type { RGBColorTuple, deltaValueType } from './types'
 
 /**
- * convert Hex string to RGB ColorTuple
+ * convert Hex string to RGB RGBColorTuple
  */
-export function hexToRGBTuple(h: string): [number, number, number] {
+export function convertHexToTuple(h: string): [number, number, number] {
   let r: any = 0
   let g: any = 0
   let b: any = 0
@@ -28,12 +28,12 @@ export function hexToRGBTuple(h: string): [number, number, number] {
 /**
  * LAB colorspace represented by tuple
  */
-type LABColor = ColorTuple
+type LABColor = RGBColorTuple
 
 /**
-   * convert RGB ColorTuple to LAB ColorType
+   * convert RGB RGBColorTuple to LAB ColorType
    */
-export function convertRGBToLAB(rgb: ColorTuple): LABColor {
+export function convertRGBToLAB(rgb: RGBColorTuple): LABColor {
   let r = rgb[0] / 255
   let g = rgb[1] / 255
   let b = rgb[2] / 255
@@ -53,126 +53,117 @@ export function convertRGBToLAB(rgb: ColorTuple): LABColor {
 }
 
 /**
- * converts a ColorTuple to rgb string e.g `rgb(0,0,0)`
+ * converts a RGBColorTuple to rgb string e.g `rgb(0,0,0)`
  */
-export function toRBGString([r, g, b]: ColorTuple) {
+export function toRBGString([r, g, b]: RGBColorTuple) {
   return `rgb(${r},${g},${b})`
 }
 
 /**
-   * converts a ColorTuple to hsl string e.g `hsl(0,0,0)`
+   * converts a RGBColorTuple to hsl string e.g `hsl(0,0,0)`
    */
-export function toHSLString([h, s, l]: ColorTuple) {
+export function toHSLString([h, s, l]: RGBColorTuple) {
   return `hsl(${h},${s},${l})`
 }
 
-type ConversionFunction = (color: string) => ColorTuple
+type ConversionFunction = (color: string) => RGBColorTuple
 
-const convertRGBorLab = (color: string): ColorTuple => {
+const convertStringToTuple = (color: string): RGBColorTuple => {
   const r = color.match(/\d+/g)
 
   if (!r)
     return [0, 0, 0]
 
-  return r as unknown as ColorTuple
+  return r as unknown as RGBColorTuple
+}
+
+const convertHSLtoTuple = (color: string): RGBColorTuple => {
+  let [h, s, l] = convertStringToTuple(color)
+
+  s /= 100
+  l /= 100
+
+  // Strip label and convert to degrees (if necessary)
+  if (color.includes('rad'))
+    h = Math.round(h * (180 / Math.PI))
+
+  else if (color.includes('turn'))
+    h = Math.round(h * 360)
+
+  if (h >= 360)
+    h %= 360
+
+  const c = (1 - Math.abs(2 * l - 1)) * s
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
+  const m = l - c / 2
+  let r = 0
+  let g = 0
+  let b = 0
+
+  if (h >= 0 && h < 60) {
+    r = c
+    g = x
+    b = 0
+  }
+  else if (h >= 60 && h < 120) {
+    r = x
+    g = c
+    b = 0
+  }
+  else if (h >= 120 && h < 180) {
+    r = 0
+    g = c
+    b = x
+  }
+  else if (h >= 180 && h < 240) {
+    r = 0
+    g = x
+    b = c
+  }
+  else if (h >= 240 && h < 300) {
+    r = x
+    g = 0
+    b = c
+  }
+  else if (h >= 300 && h < 360) {
+    r = c
+    g = 0
+    b = x
+  }
+  r = Math.round((r + m) * 255)
+  g = Math.round((g + m) * 255)
+  b = Math.round((b + m) * 255)
+
+  return [r, g, b]
 }
 
 const converstionMap: Record<deltaValueType, ConversionFunction> = {
-  rgb: convertRGBorLab,
-  hex: (color: string) => {
-    let r: any = 0; let g: any = 0; let b: any = 0
-
-    // 3 digits
-    if (color.length === 4) {
-      r = `0x${color[1]}${color[1]}`
-      g = `0x${color[2]}${color[2]}`
-      b = `0x${color[3]}${color[3]}`
-
-      // 6 digits
-    }
-    else if (color.length === 7) {
-      r = `0x${color[1]}${color[2]}`
-      g = `0x${color[3]}${color[4]}`
-      b = `0x${color[5]}${color[6]}`
-    }
-
-    return [parseInt(r), parseInt(g), parseInt(b)] as ColorTuple
-  },
-  hsl: (color: string) => {
-    const sep = color.includes(',') ? ',' : ' '
-    const hsl = color
-      .substring(4)
-      .split(')')[0]
-      .split(sep)
-      .map(e => e.trim())
-
-    let h: any = hsl[0]
-    const s = parseInt(hsl[1].substring(0, hsl[1].length - 1), 10) / 100
-    const l = parseInt(hsl[2].substring(0, hsl[2].length - 1), 10) / 100
-
-    // Strip label and convert to degrees (if necessary)
-    if (h.includes('deg')) { h = parseInt(h.substring(0, h.length - 3), 10) }
-    else if (h.includes('rad')) {
-      h = Math.round(
-        parseInt(h.substring(0, h.length - 3), 10) * (180 / Math.PI),
-      )
-    }
-    else if (h.includes('turn')) { h = Math.round(parseFloat(h.substring(0, h.length - 4)) * 360) }
-    else {
-      h = parseInt(h, 10)
-    }
-
-    if (h >= 360)
-      h %= 360
-
-    const c = (1 - Math.abs(2 * l - 1)) * s
-    const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
-    const m = l - c / 2
-    let r = 0
-    let g = 0
-    let b = 0
-
-    if (h >= 0 && h < 60) {
-      r = c
-      g = x
-      b = 0
-    }
-    else if (h >= 60 && h < 120) {
-      r = x
-      g = c
-      b = 0
-    }
-    else if (h >= 120 && h < 180) {
-      r = 0
-      g = c
-      b = x
-    }
-    else if (h >= 180 && h < 240) {
-      r = 0
-      g = x
-      b = c
-    }
-    else if (h >= 240 && h < 300) {
-      r = x
-      g = 0
-      b = c
-    }
-    else if (h >= 300 && h < 360) {
-      r = c
-      g = 0
-      b = x
-    }
-    r = Math.round((r + m) * 255)
-    g = Math.round((g + m) * 255)
-    b = Math.round((b + m) * 255)
-
-    return [r, g, b]
-  },
-
-  lab: convertRGBorLab,
+  rgb: convertStringToTuple,
+  hex: convertHexToTuple,
+  hsl: convertHSLtoTuple,
+  lab: convertStringToTuple,
 
 }
 
-export function getColorConvertion(type: deltaValueType) {
-  return converstionMap[type]
+export function getType(color: string, type?: deltaValueType): deltaValueType {
+  if (type)
+    return type
+
+  if (color.slice(0, 3).includes('rgb'))
+    return 'rgb'
+
+  if (color.slice(0, 3).includes('hsl'))
+    return 'hsl'
+
+  if (color.slice(0, 3).includes('#'))
+    return 'hex'
+
+  if (color.slice(0, 3).includes('lab'))
+    return 'lab'
+
+  return 'rgb'
+}
+
+export function getColorConvertion(color: string, type?: deltaValueType) {
+  return converstionMap[getType(color, type)](color)
 }
