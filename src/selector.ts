@@ -1,12 +1,14 @@
 import { isPerceivable } from './isPerceivable'
-import type { ColorTuple } from './types'
+import type { ColorTuple, deltaValueType } from './types'
 
 interface SelectorOptions {
-  base: ColorTuple
+  base: ColorTuple | string
+  type?: deltaValueType
   threshold?: number
 }
 
-const defaultOptions = {
+const defaultOptions: Pick<Required<SelectorOptions>, 'threshold' | 'type'> = {
+  type: 'rgb',
   threshold: 5,
 }
 
@@ -15,12 +17,13 @@ const defaultOptions = {
  * fallback contrast color and will pick the first fallback thats contrast meets the threshold
  * if none meet contrast ratio selector will return the last fallback supplied
  */
-export function selector(options: SelectorOptions, ...fallbacks: ColorTuple[]): ColorTuple {
-  const { base, threshold } = { ...defaultOptions, ...options }
+export function selector(options: SelectorOptions, ...fallbacks: Array<ColorTuple | string>): ColorTuple | string {
+  const { base, threshold, type }: Required<SelectorOptions> = { ...defaultOptions, ...options }
 
-  function filter(...filters: ColorTuple[]) {
+  // TODO Better Typeing
+  function filter(...filters: any) {
     if (filters.length > 1) {
-      if (!isPerceivable(base, filters[0], threshold))
+      if (!isPerceivable(base as any, filters[0] as any, threshold, type))
         return selector(options, ...filters.slice(1))
 
       else
