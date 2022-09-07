@@ -53,6 +53,9 @@
     "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "yewtils": "^0.0.2"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.1",
     "@antfu/ni": "^0.17.2",
@@ -66,7 +69,7 @@
     "typescript": "^4.7.4",
     "unbuild": "^0.8.8",
     "vite": "^3.0.7",
-    "vitest": "^0.22.0",
-    "yewtils": "^0.0.2"
+    "vitest": "^0.22.0"
+  
   }
 }
