@@ -36,8 +36,6 @@ pnpm add color-delta-e
 
 ## API
 
-current beta limitations:
-   1. only supports RGB value inputs
 
 ### `deltaE`
 
