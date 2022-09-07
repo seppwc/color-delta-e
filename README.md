@@ -114,7 +114,7 @@ res // [200, 30, 10]
 ```
 
 
-values dont have to be the same typescript
+values dont have to be the same type
 
 ```typescript
 import { selector } from 'color-delta-e'
