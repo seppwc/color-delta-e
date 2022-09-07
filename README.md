@@ -61,7 +61,7 @@ you can also pass values as strings, values dont have to be the same type
   import { deltaE } from 'color-delta-e'
 
   const res = deltaE(
-            'rgb(55,117,192)'',
+            'rgb(55,117,192)',
             '#0e51a2',  // the types will be inferred when using strings!
             )
 
@@ -158,9 +158,10 @@ res // [100, 23, 221]
 
 ### `utils`
 
-##### `toRGBString`
+##### `toRGBString` 
+util that converts tuple to rgb string
 
 ##### `toHSLString`
+util that converts tuple to hsl string
 
-##### `toHexString`
 
