@@ -49,10 +49,25 @@ takes two colors and measures the percievable difference between them and return
   const res = deltaE(
             [55,117,192],
             [14,81,162], 
-            'rgb')
+            'rgb' // need to pass the type of the values if passing a tuple
+            )
 
   res // 14.143
 ```
+
+you can also pass values as strings, values dont have to be the same type
+
+```typescript
+  import { deltaE } from 'color-delta-e'
+
+  const res = deltaE(
+            'rgb(55,117,192)'',
+            '#0e51a2',  // the types will be inferred when using strings!
+            )
+
+  res // 14.143
+```
+
 
 
 ### `isPerceivable`
@@ -69,7 +84,7 @@ if(isPerceivable([55,117,192],[14,81,162])){
 ```
 
 ### `contrastText`
-takes a color and will return with `[0,0,0]` or `[255,255,255]` which ever contrasts best with provided color
+takes a color and will return with `black` or `white` which ever contrasts best with provided color, the return type will be in same format inputted, so and rgb string will return an rgb string, a hex string will return a hex string.
 
 
 ```typescript
@@ -89,7 +104,7 @@ takes in base options including base color to compare to, and threshold. rest ar
 import { selector } from 'color-delta-e'
 
 const res = selector({
-                base: [0, 0, 0]
+                compare: [0, 0, 0]
             },
             [0, 1, 0],
             [0, 2, 0],
@@ -99,6 +114,25 @@ const res = selector({
 
 res // [200, 30, 10]
 ```
+
+
+values dont have to be the same typescript
+
+```typescript
+import { selector } from 'color-delta-e'
+
+const res = selector({
+                compare: 'hsl(0, 0%, 0%)'
+            },
+            'rgb(0, 1, 0)',
+            '#002200',
+            [200, 30, 10],
+            [255, 255, 255]
+);
+
+res // [200, 30, 10]
+```
+
 
 
 
