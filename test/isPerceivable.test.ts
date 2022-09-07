@@ -25,8 +25,8 @@ describe('isPerceivable', () => {
   })
 
   it('should take a third argument that changes the threshold', () => {
-    expect(isPerceivable([18, 19, 74], [8, 13, 78], 1)).toBe(true)
+    expect(isPerceivable([18, 19, 74], [8, 13, 78], { threshold: 1 })).toBe(true)
 
-    expect(isPerceivable([18, 19, 74], [33, 145, 56], 100)).toBe(false)
+    expect(isPerceivable([18, 19, 74], [33, 145, 56], { threshold: 100 })).toBe(false)
   })
 })

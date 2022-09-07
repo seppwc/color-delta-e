@@ -8,8 +8,8 @@ import { getType } from './utils'
  */
 
 const colorReturnMapsString = {
-  rgb: ['rgb(0,0,0)', 'rgb(255,255,255)'],
-  hsl: ['hsl(0,0%,0%)', 'hsl(0,100%,100%)'],
+  rgb: ['rgb(0, 0, 0)', 'rgb(255, 255, 255)'],
+  hsl: ['hsl(0, 0%, 0%)', 'hsl(0, 100%, 100%)'],
   hex: ['#000', '#fff'],
   lab: ['#000', '#fff'],
 }
@@ -27,12 +27,12 @@ const maps = {
 }
 
 export function contrastText(color: ColorTuple, type: deltaValueType): ColorTuple
-export function contrastText(color: string, type: deltaValueType): string
-export function contrastText(color: unknown, type: deltaValueType = 'rgb'): unknown {
+export function contrastText(color: string, type?: deltaValueType): string
+export function contrastText(color: unknown, type?: deltaValueType): unknown {
   type = getType(color as any, type)
 
   const m = maps[isString(color) ? 'string' : 'array']
 
-  return m[type][+isPerceivable(color as any, [255, 255, 255], 50, type)]
+  return m[type][+isPerceivable(color as any, [255, 255, 255], { type, threshold: 50 })]
 }
 
