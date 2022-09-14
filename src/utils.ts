@@ -1,4 +1,4 @@
-import type { RGBColorTuple, deltaValueType } from './types'
+import type { ColorTuple, RGBColorTuple, deltaValueType } from './types'
 
 /**
  * convert Hex string to RGB RGBColorTuple
@@ -66,7 +66,8 @@ export function toHSLString([h, s, l]: RGBColorTuple) {
   return `hsl(${h},${s},${l})`
 }
 
-type ConversionFunction = (color: string) => RGBColorTuple
+type StringConversionFunction = (color: string) => RGBColorTuple
+type TupleConversionFunction = (color: [number, number, number]) => LABColor
 
 const convertStringToTuple = (color: string): RGBColorTuple => {
   const r = color.match(/\d+/g)
@@ -137,18 +138,20 @@ const convertHSLtoTuple = (color: string): RGBColorTuple => {
   return [r, g, b]
 }
 
-const converstionMap: Record<deltaValueType, ConversionFunction> = {
+const stringConverstionMap: Record<deltaValueType, StringConversionFunction> = {
   rgb: convertStringToTuple,
   hex: convertHexToTuple,
   hsl: convertHSLtoTuple,
   lab: convertStringToTuple,
-
 }
 
-export function getType(color: string, type?: deltaValueType): deltaValueType {
-  if (type)
-    return type
+const tupleConverstionMap: Record<Exclude<deltaValueType, 'hex'>, TupleConversionFunction > = {
+  rgb: color => convertRGBToLAB(color),
+  hsl: color => stringConverstionMap.hsl(toHSLString(color)),
+  lab: color => color,
+}
 
+export function getType(color: string): deltaValueType {
   if (color.slice(0, 3).includes('rgb'))
     return 'rgb'
 
@@ -164,6 +167,14 @@ export function getType(color: string, type?: deltaValueType): deltaValueType {
   return 'rgb'
 }
 
-export function getColorConvertion(color: string, type?: deltaValueType) {
-  return converstionMap[getType(color, type)](color)
+export function getStringColorConvertion(color: string) {
+  const type = getType(color)
+
+  const rgbTuple = stringConverstionMap[type](color)
+
+  return getTupleColorConvertion(rgbTuple, 'rgb')
+}
+
+export function getTupleColorConvertion(color: ColorTuple, type: Exclude<deltaValueType, 'hex'>) {
+  return tupleConverstionMap[type](color)
 }
