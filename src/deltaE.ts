@@ -1,6 +1,6 @@
 import { isArray, isString } from 'yewtils'
 import type { ColorTuple, RGBColorTuple, deltaValueType } from './types'
-import { convertRGBToLAB, getColorConvertion } from './utils'
+import { getStringColorConvertion, getTupleColorConvertion } from './utils'
 
 // cache imput colors to save calculations
 const deltaCache = new Map<string, number>()
@@ -15,26 +15,32 @@ function isColorTuple(possibleColorTuple: unknown): possibleColorTuple is RGBCol
  * more on delta-e: http://zschuessler.github.io/DeltaE/learn/
  */
 
-export function deltaE(color1: ColorTuple, color2: string, type: deltaValueType): number
-export function deltaE(color1: string, color2: ColorTuple, type: deltaValueType): number
-export function deltaE(color1: ColorTuple, color2: ColorTuple, type: deltaValueType): number
-export function deltaE(color1: string, color2: string, type?: deltaValueType): number
+export function deltaE(color1: ColorTuple, color2: string, type: Exclude<deltaValueType, 'hex'>): number
+export function deltaE(color1: string, color2: ColorTuple, type: Exclude<deltaValueType, 'hex'>): number
+export function deltaE(color1: ColorTuple, color2: ColorTuple, type: Exclude<deltaValueType, 'hex'>): number
+export function deltaE(color1: string, color2: string, type?: Exclude<deltaValueType, 'hex'>): number
 export function deltaE(color1: unknown, color2: unknown, type: unknown): number {
   if (isString(color1))
-    color1 = getColorConvertion(color1, type as deltaValueType | undefined)
+    color1 = getStringColorConvertion(color1)
+  else if (isColorTuple(color1))
+    color1 = getTupleColorConvertion(color1, type as Exclude<deltaValueType, 'hex'>)
+  else throw new Error(`${color1} type could not be infered if is string, otherwise type has not been provided as an option if passing a tuple`)
 
   if (isString(color2))
-    color2 = getColorConvertion(color2, type as deltaValueType | undefined)
+    color2 = getStringColorConvertion(color2)
+  else if (isColorTuple(color2))
+    color1 = getTupleColorConvertion(color2, type as Exclude<deltaValueType, 'hex'>)
+  else throw new Error(`${color2} type could not be infered if is string, otherwise type has not been provided as an option `)
 
   const value = deltaCache.get(JSON.stringify([color1, color2]))
   if (value)
     return value
 
   if (!isColorTuple(color1) || !isColorTuple(color2))
-    return -1
+    throw new Error(`colors: ${color1} and ${color2} could type could not be infered or converted`)
 
-  const labA = convertRGBToLAB(color1)
-  const labB = convertRGBToLAB(color2)
+  const labA = color1
+  const labB = color2
   const deltaL = labA[0] - labB[0]
   const deltaA = labA[1] - labB[1]
   const deltaB = labA[2] - labB[2]
