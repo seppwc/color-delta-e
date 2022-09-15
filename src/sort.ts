@@ -15,9 +15,9 @@ const sortMap: Record<'asc' | 'dec', (type?: Exclude<deltaValueType, 'hex'>) => 
   },
 }
 
-export function sort<T extends any[]>(comparitor: string | ColorTuple, toSort: T, option?: SortOptions): T {
-  const direction = option?.direction || 'asc'
-  const type = option?.type || 'rgb'
+export function sort<T extends any[]>(comparitor: string | ColorTuple, toSort: T, options?: SortOptions): T {
+  const direction = options?.direction || 'asc'
+  const type = options?.type || 'rgb'
 
   return Array.from(toSort).sort(sortMap[direction](type)(comparitor)) as T
 }
