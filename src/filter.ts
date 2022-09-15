@@ -9,5 +9,5 @@ interface FilterOptions {
 export function filter<T extends any[]>(comparitor: string | ColorTuple, filterList: T, options?: FilterOptions): any[] {
   options = { threshold: 5, type: 'rgb', ...options }
 
-  return filterList.filter(color => isPerceivable(comparitor as any, color, options))
+  return filterList.filter(color => isPerceivable(comparitor as any, color, options as any))
 }
