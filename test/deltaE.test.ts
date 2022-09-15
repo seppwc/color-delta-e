@@ -108,15 +108,7 @@ describe('DeltaE', () => {
     expect(+deltaE('hsl(0,0%,0%)', 'hsl(0,100%, 100%)').toPrecision(3)).toEqual(100)
   })
 
-  it('should accept hex strings', () => {
-    expect(deltaE('#ff0000', '#ff0000', 'hex')).toEqual(0)
-
-    expect(+deltaE('#ff0000', '#ff0077', 'hex').toPrecision(3)).toEqual(21.6)
-
-    expect(+deltaE('#000000', '#ffffff', 'hex').toPrecision(3)).toEqual(100)
-  })
-
-  it('should infer hex strings', () => {
+  it('should accept/infer hex strings', () => {
     expect(deltaE('#ff0000', '#ff0000')).toEqual(0)
 
     expect(+deltaE('#ff0000', '#ff0077').toPrecision(3)).toEqual(21.6)

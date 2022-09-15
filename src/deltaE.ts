@@ -1,13 +1,9 @@
-import { isArray, isString } from 'yewtils'
-import type { ColorTuple, RGBColorTuple, deltaValueType } from './types'
-import { getStringColorConvertion, getTupleColorConvertion } from './utils'
+import { isString } from 'yewtils'
+import type { ColorTuple, deltaValueType } from './types'
+import { getStringColorConvertion, getTupleColorConvertion, isColorTuple } from './utils'
 
 // cache imput colors to save calculations
 const deltaCache = new Map<string, number>()
-
-function isColorTuple(possibleColorTuple: unknown): possibleColorTuple is RGBColorTuple {
-  return isArray(possibleColorTuple) && possibleColorTuple.length === 3
-}
 
 /**
  * takes two colors and measure of change in visual perception of the two given colors, returns delta-e value 0 - 100+
@@ -23,13 +19,13 @@ export function deltaE(color1: unknown, color2: unknown, type: unknown): number 
   if (isString(color1))
     color1 = getStringColorConvertion(color1)
   else if (isColorTuple(color1))
-    color1 = getTupleColorConvertion(color1, type as Exclude<deltaValueType, 'hex'>)
+    color1 = getTupleColorConvertion(color1, type as Exclude<deltaValueType, 'hex'> || 'rgb')
   else throw new Error(`${color1} type could not be infered if is string, otherwise type has not been provided as an option if passing a tuple`)
 
   if (isString(color2))
     color2 = getStringColorConvertion(color2)
   else if (isColorTuple(color2))
-    color1 = getTupleColorConvertion(color2, type as Exclude<deltaValueType, 'hex'>)
+    color2 = getTupleColorConvertion(color2, type as Exclude<deltaValueType, 'hex'> || 'rgb')
   else throw new Error(`${color2} type could not be infered if is string, otherwise type has not been provided as an option `)
 
   const value = deltaCache.get(JSON.stringify([color1, color2]))

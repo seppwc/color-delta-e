@@ -1,11 +1,9 @@
-import { isString } from 'yewtils'
 import { isPerceivable } from './isPerceivable'
-import type { ColorTuple, deltaValueType } from './types'
-import { getColorConvertion } from './utils'
+import type { ColorTuple, InputTupleTypes } from './types'
 
 interface SelectorOptions {
   compare: ColorTuple | string
-  type?: deltaValueType
+  type?: InputTupleTypes
   threshold?: number
 }
 
@@ -22,11 +20,6 @@ const defaultOptions: Pick<Required<SelectorOptions>, 'threshold' | 'type'> = {
 export function selector(options: SelectorOptions, ...fallbacks: Array<ColorTuple | string>): ColorTuple | string {
   // eslint-disable-next-line prefer-const
   let { compare, threshold, type }: SelectorOptions = { ...defaultOptions, ...options }
-
-  if (isString(compare)) {
-    compare = getColorConvertion(compare)
-    type = undefined
-  }
 
   // TODO Better Typeing
 
