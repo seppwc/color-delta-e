@@ -1,6 +1,5 @@
-import { isArray, isString } from 'yewtils'
 import { deltaE } from './deltaE'
-import type { ColorTuple, deltaValueType } from './types'
+import type { ColorTuple, InputTupleTypes } from './types'
 
 /**
  * checks if `first` would be noticebly different to the naked eye to `second`
@@ -10,17 +9,14 @@ import type { ColorTuple, deltaValueType } from './types'
 
 interface IsPerceivableOptions {
   threshold?: number
-  type?: deltaValueType
+  type?: InputTupleTypes
 }
 
 export function isPerceivable(first: ColorTuple, second: ColorTuple, options?: IsPerceivableOptions): boolean
 export function isPerceivable(first: string, second: string, options?: IsPerceivableOptions): boolean
 export function isPerceivable(first: unknown, second: unknown, options?: IsPerceivableOptions): boolean {
   const threshold = options?.threshold || 5
-  const type = options?.type
+  const type = options?.type || 'rgb'
 
-  if (!isArray(first) && !isArray(second) && isString(first) && isString(second))
-    return Math.round(deltaE(first, second)) > threshold
-
-  return Math.round(deltaE(first as ColorTuple, second as ColorTuple, type as deltaValueType)) > threshold
+  return Math.round(deltaE(first as any, second as any, type as any)) > threshold
 }

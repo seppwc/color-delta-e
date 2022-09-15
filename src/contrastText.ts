@@ -1,7 +1,7 @@
 import { isString } from 'yewtils'
 import { isPerceivable } from './isPerceivable'
-import type { ColorTuple, deltaValueType } from './types'
-import { getType } from './utils'
+import type { ColorTuple, InputTupleTypes } from './types'
+import { getType, isColorTuple } from './utils'
 
 /**
  * returns either '#000' or '#fff' base on which contrasts better with provided color
@@ -17,7 +17,6 @@ const colorReturnMapsString = {
 const colorReturnMapsTuples = {
   rgb: [[0, 0, 0], [255, 255, 255]],
   hsl: [[0, 0, 0], [0, 100, 100]],
-  hex: [[0, 0, 0], [255, 255, 255]],
   lab: [[0, 0, 0], [0, 0, 0]],
 }
 
@@ -26,13 +25,19 @@ const maps = {
   array: colorReturnMapsTuples,
 }
 
-export function contrastText(color: ColorTuple, type: deltaValueType): ColorTuple
-export function contrastText(color: string, type?: deltaValueType): string
-export function contrastText(color: unknown, type?: deltaValueType): unknown {
-  type = getType(color as any, type)
+export function contrastText(color: ColorTuple, type: InputTupleTypes): ColorTuple
+export function contrastText(color: string, type?: undefined): string
+export function contrastText(color: unknown, type?: InputTupleTypes): unknown {
+  if (type === undefined && isColorTuple(color))
+    throw new Error('No color space type passed contrastText when tuple is passed')
+
+  type = isColorTuple(color) ? type : getType(color as any) as any
+
+  if (!type)
+    throw new Error('Could not infer color space type inside contrastText')
 
   const m = maps[isString(color) ? 'string' : 'array']
 
-  return m[type][+isPerceivable(color as any, [255, 255, 255], { type, threshold: 50 })]
+  return m[type as keyof typeof m][+isPerceivable(color as any, colorReturnMapsString[type][1], { type, threshold: 50 })]
 }
 

@@ -1,3 +1,4 @@
+import { isArray } from 'yewtils'
 import type { ColorTuple, RGBColorTuple, deltaValueType } from './types'
 
 /**
@@ -147,7 +148,7 @@ const stringConverstionMap: Record<deltaValueType, StringConversionFunction> = {
 
 const tupleConverstionMap: Record<Exclude<deltaValueType, 'hex'>, TupleConversionFunction > = {
   rgb: color => convertRGBToLAB(color),
-  hsl: color => stringConverstionMap.hsl(toHSLString(color)),
+  hsl: color => convertRGBToLAB(stringConverstionMap.hsl(toHSLString(color))),
   lab: color => color,
 }
 
@@ -176,5 +177,12 @@ export function getStringColorConvertion(color: string) {
 }
 
 export function getTupleColorConvertion(color: ColorTuple, type: Exclude<deltaValueType, 'hex'>) {
-  return tupleConverstionMap[type](color)
+  const res = tupleConverstionMap[type](color)
+  // console.log({ type, res })
+
+  return res
+}
+
+export function isColorTuple(possibleColorTuple: unknown): possibleColorTuple is RGBColorTuple {
+  return isArray(possibleColorTuple) && possibleColorTuple.length === 3
 }
