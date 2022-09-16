@@ -154,12 +154,3 @@ res // [100, 23, 221]
 
 
 
-### `utils`
-
-##### `toRGBString` 
-util that converts tuple to rgb string
-
-##### `toHSLString`
-util that converts tuple to hsl string
-
-
