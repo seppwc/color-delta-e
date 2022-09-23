@@ -54,7 +54,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "yewtils": "^0.0.2"
+    "yewtils": "^0.1.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.1",
