@@ -17,9 +17,9 @@ importers:
       unbuild: ^0.8.8
       vite: ^3.0.7
       vitest: ^0.22.0
-      yewtils: ^0.1.0
+      yewtils: ^0.1.1
     dependencies:
-      yewtils: 0.1.0
+      yewtils: 0.1.1
     devDependencies:
       '@antfu/eslint-config': 0.26.1_4rv7y5c6xz3vfxwhbrcxxi73bq
       '@antfu/ni': 0.17.2
@@ -3904,8 +3904,8 @@ packages:
     engines: {node: '>= 14'}
     dev: true
 
-  /yewtils/0.1.0:
-    resolution: {integrity: sha512-kLuMdGGYLmCXbRzKfuhQTUf5Kzn5Bj/+Nwa+u66Qy0Ka2CASaq1UMIrrZQmhjyKkLpggtgRze2HHx9pFqupgZw==}
+  /yewtils/0.1.1:
+    resolution: {integrity: sha512-2LL+A14/9kt/MwL4VAt2nBhVbNhwV/5qKWf3HuWZcThtpnEDyzZOfYCX9nTXxZRmpia2BRdX6ANP0H6gKYeFdg==}
     dev: false
 
   /yocto-queue/0.1.0:

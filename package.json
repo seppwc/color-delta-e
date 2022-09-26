@@ -29,7 +29,7 @@
       "import": "./dist/index.mjs"
     }
   },
-  "main": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "typesVersions": {
@@ -54,7 +54,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "yewtils": "^0.1.0"
+    "yewtils": "^0.1.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.1",
