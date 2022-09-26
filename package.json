@@ -1,7 +1,7 @@
 {
   "name": "color-delta-e",
   "type": "module",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "packageManager": "pnpm@7.9.0",
   "description": "",
   "author": "Sepp Wikramaratna-Clarke <https://github.com/Phl3bas>",
