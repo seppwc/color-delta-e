@@ -11,11 +11,11 @@ const deltaCache = new Map<string, number>()
  * more on delta-e: http://zschuessler.github.io/DeltaE/learn/
  */
 
-export function deltaE(color1: ColorTuple, color2: string, type: Exclude<deltaValueType, 'hex'>): number
-export function deltaE(color1: string, color2: ColorTuple, type: Exclude<deltaValueType, 'hex'>): number
-export function deltaE(color1: ColorTuple, color2: ColorTuple, type: Exclude<deltaValueType, 'hex'>): number
-export function deltaE(color1: string, color2: string, type?: Exclude<deltaValueType, 'hex'>): number
-export function deltaE(color1: unknown, color2: unknown, type: unknown): number {
+export function deltaE(color1: ColorTuple, color2: string, type: Exclude<deltaValueType, 'hex'>, nocache?: boolean): number
+export function deltaE(color1: string, color2: ColorTuple, type: Exclude<deltaValueType, 'hex'>, nocache?: boolean): number
+export function deltaE(color1: ColorTuple, color2: ColorTuple, type: Exclude<deltaValueType, 'hex'>, nocache?: boolean): number
+export function deltaE(color1: string, color2: string, type?: Exclude<deltaValueType, 'hex'>, nocache?: boolean): number
+export function deltaE(color1: unknown, color2: unknown, type: unknown, nocache?: boolean): number {
   if (isString(color1))
     color1 = getStringColorConvertion(color1)
   else if (isColorTuple(color1))
@@ -28,9 +28,11 @@ export function deltaE(color1: unknown, color2: unknown, type: unknown): number 
     color2 = getTupleColorConvertion(color2, type as Exclude<deltaValueType, 'hex'> || 'rgb')
   else throw new Error(`${color2} type could not be infered if is string, otherwise type has not been provided as an option `)
 
-  const value = deltaCache.get(JSON.stringify([color1, color2]))
-  if (value)
-    return value
+  if (!nocache) {
+    const value = deltaCache.get(JSON.stringify([color1, color2]))
+    if (value)
+      return value
+  }
 
   if (!isColorTuple(color1) || !isColorTuple(color2))
     throw new Error(`colors: ${color1} and ${color2} could type could not be infered or converted`)
@@ -55,7 +57,8 @@ export function deltaE(color1: unknown, color2: unknown, type: unknown): number 
 
   const result = i < 0 ? 0 : Math.sqrt(i)
 
-  deltaCache.set(JSON.stringify([color1, color2]), result)
+  if (!nocache)
+    deltaCache.set(JSON.stringify([color1, color2]), result)
 
   return result
 }
