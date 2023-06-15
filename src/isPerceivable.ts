@@ -11,13 +11,14 @@ import type { ColorTuple, InputTupleTypes } from './types'
 interface IsPerceivableOptions {
   threshold?: number
   type?: InputTupleTypes
+  nocache?: boolean
 }
 
-export function isPerceivable(first: ColorTuple, second: ColorTuple, options?: IsPerceivableOptions, nocache?: boolean): boolean
-export function isPerceivable(first: string, second: string, options?: IsPerceivableOptions, nocache?: boolean): boolean
-export function isPerceivable(first: unknown, second: unknown, options?: IsPerceivableOptions, nocache?: boolean): boolean {
+export function isPerceivable(first: ColorTuple, second: ColorTuple, options?: IsPerceivableOptions): boolean
+export function isPerceivable(first: string, second: string, options?: IsPerceivableOptions): boolean
+export function isPerceivable(first: unknown, second: unknown, options?: IsPerceivableOptions): boolean {
   const threshold = options?.threshold || 5
   const type = options?.type || 'rgb'
 
-  return Math.round(deltaE(first as any, second as any, type as any, nocache)) > threshold
+  return Math.round(deltaE(first as any, second as any, type as any, options?.nocache)) > threshold
 }
