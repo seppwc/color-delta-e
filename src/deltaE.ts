@@ -5,6 +5,10 @@ import { getStringColorConvertion, getTupleColorConvertion, isColorTuple } from 
 // cache imput colors to save calculations
 const deltaCache = new Map<string, number>()
 
+export function clearCache(): void {
+  deltaCache.clear()
+}
+
 /**
  * takes two colors and measure of change in visual perception of the two given colors, returns delta-e value 0 - 100+
  *
