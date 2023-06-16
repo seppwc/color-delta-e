@@ -67,6 +67,38 @@ you can also pass values as strings, values dont have to be the same type
 ```
 
 
+#### Cached Results
+
+deltaE automatically caches results, in order to save calculation of the same colors, if you need to clear this cache in order to remove a potential memory leak there are two options.
+
+#### `nocache` option
+```typescript
+  import { deltaE } from 'color-delta-e' 
+
+  const res = deltaE(
+            [55,117,192],
+            [14,81,162], 
+            'rgb',
+            true, //nocache option: when set to tru will not cache the result.
+            )
+
+```
+
+#### `clearCache`
+
+```typescript
+  import { deltaE, clearCache } from 'color-delta-e' 
+
+  deltaE('#BADA55', '#C0FFEE') //result cached
+
+  deltaE('#BADA55', '#C0FFEE') // cached result returned  
+
+  clearCache()
+
+  deltaE('#BADA55', '#C0FFEE') // value recalculated and cached
+```
+
+
 
 ### `isPerceivable`
 

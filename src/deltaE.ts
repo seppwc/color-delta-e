@@ -5,6 +5,9 @@ import { getStringColorConvertion, getTupleColorConvertion, isColorTuple } from 
 // cache imput colors to save calculations
 const deltaCache = new Map<string, number>()
 
+/**
+ * manually clear the internal cache.
+ */
 export function clearCache(): void {
   deltaCache.clear()
 }
